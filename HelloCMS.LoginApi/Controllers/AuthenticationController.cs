@@ -9,7 +9,7 @@ namespace HelloCMS.LoginApi.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class AuthenticationControllers
+    public class AuthenticationController
         : ControllerBase
     {
 
@@ -19,7 +19,7 @@ namespace HelloCMS.LoginApi.Controllers
 
         //Constructor
 
-        public AuthenticationControllers(LoginManager loginManager)
+        public AuthenticationController(LoginManager loginManager)
         {
             this.loginManager = loginManager;
         }
