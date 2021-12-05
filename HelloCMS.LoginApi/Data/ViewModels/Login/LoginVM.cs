@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace HelloCMS.LoginApi.Data.ViewModels
+namespace HelloCMS.Identity.Data.ViewModels
 {
     /// <summary>
     /// Login View Model

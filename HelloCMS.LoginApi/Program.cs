@@ -1,10 +1,12 @@
-using HelloCMS.LoginApi.Data;
-using HelloCMS.LoginApi.Data.Models;
-using HelloCMS.LoginApi.Managers;
+using AutoMapper;
+using HelloCMS.Identity.Data;
+using HelloCMS.Identity.Data.Models;
+using HelloCMS.Identity.Infrastructure.Automapper;
+using HelloCMS.Identity.Infrastructure.ServiceRegistration;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.InMemory;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
@@ -21,7 +23,6 @@ Configure();
 
 void ConfigureServices()
 {
-
     //Setup Database
     var AppConnstr = builder.Configuration.GetConnectionString("CMSConnection");
 
@@ -31,9 +32,19 @@ void ConfigureServices()
         builder.Services.AddDbContext<AppDbContext>(opt => opt.UseSqlServer(AppConnstr));
 
     //Add Identity
-    builder.Services.AddIdentity<AppIdentityUser, IdentityRole>()
+    builder.Services.AddIdentity<AppIdentityUser, AppIdentityRole>()
         .AddEntityFrameworkStores<AppDbContext>()
         .AddDefaultTokenProviders();
+
+    //Automapper
+    // Auto Mapper Configurations
+    var mapperConfig = new MapperConfiguration(mc =>
+    {
+        mc.AddProfile(new MappingProfile());
+    });
+
+    IMapper mapper = mapperConfig.CreateMapper();
+    builder.Services.AddSingleton(mapper);
 
     //Token Validation Parameter
 
@@ -70,7 +81,7 @@ void ConfigureServices()
 
 
     //Add Managers and Controllers
-    builder.Services.AddManagers(builder.Configuration);
+    builder.Services.AddServices(builder.Configuration);
     builder.Services.AddControllers();
 
     //Add Swagger
@@ -87,6 +98,12 @@ void Configure()
         app.UseSwagger();
         app.UseSwaggerUI();
     }
+    else
+    {
+        app.UseExceptionHandler("/Error");
+        app.UseHsts();
+    }
+    app.UseHttpLogging();
 
     app.UseHttpsRedirection();
 

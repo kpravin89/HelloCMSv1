@@ -22,7 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\HelloCMS.LoginApi\HelloCMS.LoginApi.csproj" />
+    <ProjectReference Include="..\HelloCMS.LoginApi\HelloCMS.Identity.csproj" />
   </ItemGroup>
 
 </Project>

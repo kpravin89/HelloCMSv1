@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace HelloCMS.LoginApi.Data.Models
+namespace HelloCMS.Identity.Data.Models
 {
     public class RefreshToken
     {
@@ -15,7 +15,9 @@ namespace HelloCMS.LoginApi.Data.Models
         public DateTime DateAdded { get; set; }
         public DateTime DateExpire { get; set; }
 
-        public string? UserId { get; set; }
+        public int UserId { get; set; }
+
+        public string? UserName { get; set; }
 
         [ForeignKey(nameof(UserId))]
         public AppIdentityUser? User { get; set; }

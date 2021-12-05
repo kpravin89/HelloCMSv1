@@ -1,11 +1,11 @@
-using HelloCMS.LoginApi.Controllers;
-using HelloCMS.LoginApi.Data.ViewModels;
-using HelloCMS.LoginApi.Managers;
+using HelloCMS.Identity.Services;
+using HelloCMS.Identity.Controllers;
 using Moq;
 using System.Threading.Tasks;
 using Xunit;
+using HelloCMS.Identity.Data.ViewModels.Users;
 
-namespace HelloCMS.LoginApi.UnitTests
+namespace HelloCMS.Identity.UnitTests
 {
     /// <summary>
     /// Perform Unit Testing the Authentication Controller
@@ -13,7 +13,7 @@ namespace HelloCMS.LoginApi.UnitTests
     public class AuthenticationControllerTest
     {
         //Fields
-        private readonly Mock<LoginManager> loginManager;
+        private readonly Mock<UsersServices> loginManager;
 
         //Constructor
         public AuthenticationControllerTest( )
@@ -26,10 +26,10 @@ namespace HelloCMS.LoginApi.UnitTests
         public async Task Get_Authentication_Register_Success()
         {   
             //Arrange
-            loginManager.Setup(a => a.RegisterAsync(It.IsAny<RegisterVM>()));
+            loginManager.Setup(a => a.RegisterAsync(It.IsAny<RegisterUserVM>()));
 
             //Act
-            var authenticationController = new AuthenticationController(loginManager.Object);
+            var authenticationController = new LoginController(loginManager.Object);
             var actionResult = authenticationController.Register();
 
 

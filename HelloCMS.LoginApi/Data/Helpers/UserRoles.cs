@@ -1,4 +1,4 @@
-﻿namespace HelloCMS.LoginApi.Data.Helpers
+﻿namespace HelloCMS.Identity.Data.Helpers
 {
     public static class UserRoles
     {
@@ -12,14 +12,14 @@
         {
             return sUserRole switch
             {
-                "Developer"  => UserRoles.Developer,
-                "Operation" => UserRoles.Operation,
-                "Admin" => UserRoles.Admin,
-                "Manager" => UserRoles.Manager,
-                "Executive" => UserRoles.Executive,
+                "Developer" => Developer,
+                "Operation" => Operation,
+                "Admin" => Admin,
+                "Manager" => Manager,
+                "Executive" => Executive,
                 _ => null
             };
-                    
+
         }
 
     }

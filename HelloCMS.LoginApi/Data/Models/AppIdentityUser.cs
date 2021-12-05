@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
-namespace HelloCMS.LoginApi.Data.Models
+namespace HelloCMS.Identity.Data.Models
 {
-    public class AppIdentityUser : IdentityUser
+    public class AppIdentityUser : IdentityUser<int>
     {
-
         [Required, StringLength(10)]
         public string? Salutation { get; set; }
 

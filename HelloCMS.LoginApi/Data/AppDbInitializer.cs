@@ -1,7 +1,8 @@
-﻿using HelloCMS.LoginApi.Data.Helpers;
+﻿using HelloCMS.Identity.Data.Helpers;
+using HelloCMS.Identity.Data.Models;
 using Microsoft.AspNetCore.Identity;
 
-namespace HelloCMS.LoginApi.Data
+namespace HelloCMS.Identity.Data
 {
     public class AppDbInitializer
     {
@@ -9,22 +10,22 @@ namespace HelloCMS.LoginApi.Data
         {
             using (var serviceScope = applicationBuilder.ApplicationServices.CreateScope())
             {
-                var roleManager = serviceScope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+                var roleManager = serviceScope.ServiceProvider.GetRequiredService<RoleManager<AppIdentityRole>>();
 
                 if (!await roleManager.RoleExistsAsync(UserRoles.Developer))
-                    await roleManager.CreateAsync(new IdentityRole(UserRoles.Developer));
+                    await roleManager.CreateAsync(new AppIdentityRole(UserRoles.Developer));
 
                 if (!await roleManager.RoleExistsAsync(UserRoles.Operation))
-                    await roleManager.CreateAsync(new IdentityRole(UserRoles.Operation));
+                    await roleManager.CreateAsync(new AppIdentityRole(UserRoles.Operation));
 
                 if (!await roleManager.RoleExistsAsync(UserRoles.Admin))
-                    await roleManager.CreateAsync(new IdentityRole(UserRoles.Admin));
+                    await roleManager.CreateAsync(new AppIdentityRole(UserRoles.Admin));
 
                 if (!await roleManager.RoleExistsAsync(UserRoles.Manager))
-                    await roleManager.CreateAsync(new IdentityRole(UserRoles.Manager));
+                    await roleManager.CreateAsync(new AppIdentityRole(UserRoles.Manager));
 
                 if (!await roleManager.RoleExistsAsync(UserRoles.Executive))
-                    await roleManager.CreateAsync(new IdentityRole(UserRoles.Executive));
+                    await roleManager.CreateAsync(new AppIdentityRole(UserRoles.Executive));
             }
         }
     }

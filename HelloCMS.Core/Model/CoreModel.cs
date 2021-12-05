@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HelloCMS.Identity.UnitTests.Domain
+namespace HelloCMS.Core.Model
 {
-    public class LoginManagerTest
+    public class CoreModel
     {
     }
 }
