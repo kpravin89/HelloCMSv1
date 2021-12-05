@@ -24,13 +24,9 @@ namespace HelloCMS.LoginApi.UnitTests
         //Unit Testing Methods
         [Fact]
         public async Task Get_Authentication_Register_Success()
-        {
+        {   
             //Arrange
-            //loginManager.Setup(a => a.RegisterAsync())
-            RegisterVM registerVM = new()
-            {
-
-            }
+            loginManager.Setup(a => a.RegisterAsync(It.IsAny<RegisterVM>()));
 
             //Act
             var authenticationController = new AuthenticationController(loginManager.Object);

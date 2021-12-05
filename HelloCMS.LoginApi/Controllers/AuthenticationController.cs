@@ -58,9 +58,15 @@ namespace HelloCMS.LoginApi.Controllers
         //Refresh
 
         [HttpPost("refresh-token")]
-        public async Task<IActionResult> RefreshToken()
+        public async Task<IActionResult> RefreshToken([FromBody] TokenRequestVM tokenRequestVM)
         {
-            throw new NotImplementedException();
+            if (!ModelState.IsValid)
+            {
+                return BadRequest("Please, provide all required fields");
+            }
+
+            var result = await this.loginManager.VerifyAndGenerateTokenAsync(tokenRequestVM);
+            return Ok(result);
         }
     }
 }

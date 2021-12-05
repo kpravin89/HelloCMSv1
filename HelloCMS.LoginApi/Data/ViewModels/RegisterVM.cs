@@ -3,7 +3,7 @@ using static System.Net.Mime.MediaTypeNames;
 
 namespace HelloCMS.LoginApi.Data.ViewModels
 {
-    public record RegisterVM([Required] string Salutation,
+    public record RegisterVM([Required, StringLength(10)] string Salutation,
                 [Required, StringLength(50)] string FirstName,
                 [Required, StringLength(50)] string LastName,
                 [Required, StringLength(50)] string UserName,
@@ -12,7 +12,7 @@ namespace HelloCMS.LoginApi.Data.ViewModels
                 [EmailAddress,Required, StringLength(100)] string Email,
                 [EmailAddress, StringLength(100)] string SecondaryEmail,
                 [Required, StringLength(4)] string YearOfBirth,
-                string Website,
+                [StringLength(100)] string Website,
                 [Required] string Role
         );
 }

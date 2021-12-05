@@ -47,18 +47,19 @@ namespace HelloCMS.LoginApi.Managers
         {
             //Match Password and Confirm password
             if (registerVM.Password != registerVM.ConfirmPassword)
-                return (false, "[Confirm Password] should match with [Password]");
+                throw new ArgumentException("[Confirm Password] should match with [Password]");
             //Validate if Users already exists
             var User = await userManager.FindByNameAsync(registerVM.UserName);
             if (User != null)
-                return (false, $"User Name {registerVM.UserName} already exists.");
+                throw new ArgumentException($"User Name {registerVM.UserName} already exists.");
             //Validate if email is already registered
             User = await userManager.FindByEmailAsync(registerVM.Email);
             if (User != null)
-                return (false, $"User Email {registerVM.Email} already exists.");
+                throw new ArgumentException($"User Email {registerVM.Email} already exists.");
             //Validate if user choosen valid Role
-            if (UserRoles.FindByName(registerVM.Role) == null)
-                return (false, $"Role {registerVM.Role} is invalid.");
+            var role = UserRoles.FindByName(registerVM.Role);
+            if (role == null)
+                throw new ArgumentException($"Role {registerVM.Role} is invalid.");
 
             //Map View Model to Model
             AppIdentityUser appIdentityUser = new()
@@ -80,13 +81,17 @@ namespace HelloCMS.LoginApi.Managers
             //If user created successfully, add role
             if(result.Succeeded)
             {
-                await userManager.AddToRoleAsync(appIdentityUser, registerVM.Role);
+                await userManager.AddToRoleAsync(appIdentityUser, role);
                 return (true, "User created successfully!");
             }
             //If user creation failed, capture the error message and send back to controller
             else
             {
-                return (false, "User creation failed.\r\nReason\\s:\r\n" + result.Errors.Select(a => a.Description).Aggregate((a, b) => a + "\r\n" + b));
+                throw new InvalidOperationException(
+ $@"User creation failed.
+Reason\s:
+{result.Errors.Select(a => a.Description).Aggregate((a, b) => a + "\r\n" + b)}");
+
             }
         }
 
@@ -106,6 +111,38 @@ namespace HelloCMS.LoginApi.Managers
             return (true, await GenerateTokenAsync(appIdentityUser, null));
         }
 
+        /// <summary>
+        /// Verify and generate token if it is expired
+        /// </summary>
+        /// <param name="tokenRequestVM"></param>
+        /// <returns></returns>
+        public async Task<TokenResultVM> VerifyAndGenerateTokenAsync(TokenRequestVM tokenRequestVM)
+        {
+            var jwtTokenHandler = new JwtSecurityTokenHandler();
+            var storedToken = appDbContext.RefreshTokens.FirstOrDefault(x => x.Token == tokenRequestVM.RefreshToken);
+            var dbUser = await userManager.FindByIdAsync(storedToken.UserId);
+
+            try
+            {
+                var tokenCheckResult = jwtTokenHandler.ValidateToken(tokenRequestVM.Token, tokenValidationParameters, out var validatedToken);
+
+                return await GenerateTokenAsync(dbUser, storedToken);
+            }
+            catch (SecurityTokenExpiredException)
+            {
+                if (storedToken.DateExpire >= DateTime.UtcNow)
+                {
+                    return await GenerateTokenAsync(dbUser, storedToken);
+                }
+                else
+                {
+                    return await GenerateTokenAsync(dbUser, null);
+                }
+            }
+        }
+
+
+        //Helper Methods
         private async Task<TokenResultVM> GenerateTokenAsync(AppIdentityUser appIdentityUser, RefreshToken? refreshToken)
         {
 
@@ -160,5 +197,7 @@ namespace HelloCMS.LoginApi.Managers
 
             return response;
         }
+
+
     }
 }
