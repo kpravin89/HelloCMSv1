@@ -5,6 +5,7 @@ using HelloCMS.Identity.Infrastructure.Automapper;
 using HelloCMS.Identity.Services;
 using HelloCMS.Identity.UnitTests.Helpers;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Moq;
@@ -256,14 +257,23 @@ namespace HelloCMS.Identity.UnitTests.Services
         [Trait("Category", "Users - Get")]
         public async Task Get_User_ByEmailOrName_EmailOrNameNotExists()
         {
-
             //Arrange
-
-
+            var registerUserDto = new RegisterUserDto("Mr", "Pravinkumar", "Karthikeyan", "pravin", "Test1", "Test1", "Test@gmail.com", "Test@gmail.com", "1900", "TEst Web", "Developer");
+            var appIdentityUser = _mapper.Map<AppIdentityUser>(registerUserDto);
+            var expectedResult = _mapper.Map<SelectUserDto>(appIdentityUser);
+            _userManager
+                .Setup(a => a.FindByNameAsync(It.IsAny<string>()))
+                .ReturnsAsync((AppIdentityUser)null);
+            _userManager
+                .Setup(a => a.FindByEmailAsync(It.IsAny<string>()))
+                .ReturnsAsync((AppIdentityUser)null);
             //Act
-
+            async Task act() => await _usersServices.RegisterAsync(registerUserDto);
 
             //Asset
+            var argumentException = await Assert.ThrowsAsync<ArgumentException>(act);
+
+            Assert.Equal("Given User Id is not exists", argumentException.Message);
         }
 
 
@@ -274,13 +284,7 @@ namespace HelloCMS.Identity.UnitTests.Services
         public async Task Get_Users_All_Success()
         {
 
-            //Arrange
 
-
-            //Act
-
-
-            //Asset
         }
 
         [Fact]
@@ -315,21 +319,14 @@ namespace HelloCMS.Identity.UnitTests.Services
         //Update Users
         [Fact]
         [Trait("Category", "Users - Update")]
-        public async Task Put_Users_Update_Success()
+        public async Task Users_Update_Success()
         {
-
-            //Arrange
-
-
-            //Act
-
-
-            //Asset
+  
         }
 
         [Fact]
         [Trait("Category", "Users - Update")]
-        public async Task Put_Users_Update_UserNotExists()
+        public async Task Users_Update_UserNotExists()
         {
 
             //Arrange
