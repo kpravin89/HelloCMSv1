@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HelloCMS.Identity", "HelloCMS.LoginApi\HelloCMS.Identity.csproj", "{2C759CF1-DD88-4556-A8F2-BD8F25EA41F9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HelloCMS.Identity", "HelloCMS.Identity\HelloCMS.Identity.csproj", "{2C759CF1-DD88-4556-A8F2-BD8F25EA41F9}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{CDC6D5E1-CD59-4449-BF77-B1B5D5509C84}"
 EndProject
