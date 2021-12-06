@@ -16,6 +16,9 @@ namespace HelloCMS.Identity.Infrastructure.Automapper
 
             CreateMap<SelectUserDto, AppIdentityUser>();
             CreateMap<AppIdentityUser, SelectUserDto>();
+
+            CreateMap<UpdateUserDto, AppIdentityUser>();
+            CreateMap<AppIdentityUser, UpdateUserDto>();
         }
     }
 }
