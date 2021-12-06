@@ -87,13 +87,13 @@ namespace HelloCMS.Identity.Services
             }
         }
 
-        public async Task<SelectUserDto?> GetUser(int Id)
+        public async Task<SelectUserDto?> GetUserAsync(int Id)
         {
             var userByUserId = await GetById(Id);
             return _mapper.Map<SelectUserDto>(userByUserId);
         }
 
-        public async Task<SelectUserDto?> GetUser(string usernameOrEmail)
+        public async Task<SelectUserDto?> GetUserAsync(string usernameOrEmail)
         {
             //Find user by User Name
             var usersByUserName = await _userManager.FindByNameAsync(usernameOrEmail);
@@ -108,7 +108,7 @@ namespace HelloCMS.Identity.Services
             return null;
         }
 
-        public async Task<List<SelectUserDto>?> GetUsers(string? Roles)
+        public async Task<List<SelectUserDto>?> GetUsersAsync(string? Roles)
         {
             var RolesList = Roles?.Split(',').Select(a => a.Trim()).ToList();
 
@@ -148,7 +148,7 @@ namespace HelloCMS.Identity.Services
 
         }
 
-        public async Task Update(int Id, UpdateUserDto updateVM)
+        public async Task UpdateAsync(int Id, UpdateUserDto updateVM)
         {
             var user = await GetById(Id);
             user = _mapper.Map<AppIdentityUser>(updateVM);
@@ -158,7 +158,7 @@ namespace HelloCMS.Identity.Services
                 throw new InvalidOperationException("User update failed with reason\r\n" + GetIdentityErrors(result.Errors));
         }
 
-        public async Task Delete(int Id)
+        public async Task DeleteAsync(int Id)
         {
             var user = await GetById(Id);
 

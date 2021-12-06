@@ -22,6 +22,7 @@ namespace HelloCMS.Identity.UnitTests.Services
 
         //Register User Method Testing
         [Fact]
+        [Trait("Category", "Users - Register")]
         public async Task Post_Users_Register_Successs()
         {
 
